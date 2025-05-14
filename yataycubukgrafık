@@ -1,0 +1,36 @@
+
+library(ggplot2)
+library(ggthemes)
+library(scales)
+
+# Veriler (2023 yılı işsizlik oranı en yüksekten en düşüğe 20 il)
+iller <- c("Hakkari", "Mardin", "Şırnak", "Van", "Batman", "Siirt", "Bitlis",
+           "Gaziantep", "Kilis", "Ağrı", "Şanlıurfa", "Diyarbakır", "Adıyaman",
+           "Ardahan", "Osmaniye", "Kars", "Bayburt", "Bartın", "Amasya", "Nevşehir")
+
+issizlik_oranlari <- c(23.3, 22.4, 21.8, 21.5, 20.9, 19.5, 18.8,
+                       17.6, 16.9, 15.4, 14.3, 13.7, 12.9,
+                       10.6, 9.8, 9.3, 8.7, 7.1, 6.4, 5.5)
+
+
+veri <- data.frame(Il = factor(iller, levels = rev(iller)), Issizlik = issizlik_oranlari)
+
+
+ggplot(veri, aes(x = Il, y = Issizlik)) +
+  geom_bar(stat = "identity", fill = "#1f78b4", width = 0.6) +
+  coord_flip() +
+  geom_text(aes(label = percent(Issizlik / 100)), 
+            hjust = -0.1, size = 3.5, color = "black") +
+  scale_y_continuous(labels = percent_format(scale = 1), 
+                     limits = c(0, 25), expand = expansion(mult = c(0, 0.1))) +
+  labs(title = "2023 Yılı Türkiye'de İşsizlik Oranı (En Yuksekten En Dusuge 20 İl)",
+       x = "İller", 
+       y = "İşsizlik Oranı (%)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
+    axis.text.y = element_text(size = 11),
+    axis.text.x = element_text(size = 10),
+    axis.title = element_text(face = "bold"),
+    panel.grid.major.y = element_blank()
+  )
