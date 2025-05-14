@@ -1,36 +1,38 @@
 
+data <- data.frame(
+  education_level = c("Okur-yazar olmayanlar", "Lise alti egitimliler", "Lise", "Mesleki veya teknik lise", "Yuksekogretim"),
+  labour_force = c(793, 758, 572, 572, 793),
+  employment = c(14906, 13778, 1441, 1441, 14906),
+  unemployment = c(5272, 4688, 1632, 1632, 5272)
+)
+
+
+data_long <- data.frame(
+  education_level = rep(data$education_level, each = 3),
+  value = c(data$labour_force, data$employment, data$unemployment),
+  type = rep(c("Isgucu", "Istihdam", "Issizlik"), times = 5)
+)
+
+
 library(ggplot2)
-library(ggthemes)
-library(scales)
 
-# Veriler (2023 yılı işsizlik oranı en yüksekten en düşüğe 20 il)
-iller <- c("Hakkari", "Mardin", "Şırnak", "Van", "Batman", "Siirt", "Bitlis",
-           "Gaziantep", "Kilis", "Ağrı", "Şanlıurfa", "Diyarbakır", "Adıyaman",
-           "Ardahan", "Osmaniye", "Kars", "Bayburt", "Bartın", "Amasya", "Nevşehir")
-
-issizlik_oranlari <- c(23.3, 22.4, 21.8, 21.5, 20.9, 19.5, 18.8,
-                       17.6, 16.9, 15.4, 14.3, 13.7, 12.9,
-                       10.6, 9.8, 9.3, 8.7, 7.1, 6.4, 5.5)
-
-
-veri <- data.frame(Il = factor(iller, levels = rev(iller)), Issizlik = issizlik_oranlari)
-
-
-ggplot(veri, aes(x = Il, y = Issizlik)) +
-  geom_bar(stat = "identity", fill = "#1f78b4", width = 0.6) +
-  coord_flip() +
-  geom_text(aes(label = percent(Issizlik / 100)), 
-            hjust = -0.1, size = 3.5, color = "black") +
-  scale_y_continuous(labels = percent_format(scale = 1), 
-                     limits = c(0, 25), expand = expansion(mult = c(0, 0.1))) +
-  labs(title = "2023 Yılı Türkiye'de İşsizlik Oranı (En Yuksekten En Dusuge 20 İl)",
-       x = "İller", 
-       y = "İşsizlik Oranı (%)") +
-  theme_minimal(base_size = 12) +
+ggplot(data_long, aes(x = education_level, y = value, fill = type)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7) +  
+  labs(
+    title = "2024 Yili Egitim Durumuna Gore Isgucu Dagilimi",
+    x = "Egitim Durumu",
+    y = "Bin Kisi",
+    fill = "Kategori"
+  ) +
+  theme_minimal(base_size = 14) +  # Daha buyuk metin boyutu
   theme(
-    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
-    axis.text.y = element_text(size = 11),
-    axis.text.x = element_text(size = 10),
-    axis.title = element_text(face = "bold"),
-    panel.grid.major.y = element_blank()
-  )
+    axis.text.x = element_text(angle = 45, hjust = 1, color = "darkblue", size = 12), 
+    axis.text.y = element_text(color = "darkblue", size = 12),  
+    legend.title = element_text(size = 1),  
+    legend.text = element_text(size = 12),   
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5, color = "darkblue")  
+  ) +
+  scale_fill_manual(values = c("Isgucu" = "#1f77b4", "Istihdam" = "#2ca02c", "Issizlik" = "#d62728")) +  
+  coord_cartesian(clip = "off") +  
+  geom_text(aes(label = value), position = position_dodge(width = 0.7), vjust = -0.5, size = 3, color = "black")  
+
