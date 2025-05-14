@@ -1,0 +1,23 @@
+library(ggplot2)
+
+
+kanallar <- c("Isverene Basvuru", "Es-Dost", "Is-Kur", "Ozel Ofis", 
+              "Ilani Inceleme", "Ilana Cevap", "Online Basvuru", 
+              "Mulakat", "Is Kurma")
+degerler <- c(1698, 2379, 1146, 909, 892, 99, 803, 313, 294)
+
+df <- data.frame(Kanal = kanallar, Kisi = degerler)
+
+
+df$Yuzde <- round(df$Kisi / sum(df$Kisi) * 100, 1)
+df$Etiket <- paste0(df$Kanal, " - ", df$Yuzde, "%")
+
+
+ggplot(df, aes(x = "", y = Kisi, fill = Kanal)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  labs(title = "2024 - Is Arama Yontemleri Dagilimi") +
+  theme_void() +
+  geom_text(aes(label = Etiket), position = position_stack(vjust = 0.5), size = 2.5) +
+  scale_fill_brewer(palette = "Set3") +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 10))
