@@ -1,0 +1,25 @@
+
+yillar <- c(2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024)
+toplam <- c(17.9, 18.5, 19.6, 20.8, 20.3, 25.4, 25.3, 22.6, 19.4, 17.4, 16.3)
+erkek <- c(16.6, 16.5, 17.4, 17.8, 17.6, 22.5, 22.6, 19.4, 16.4, 14.3, 13.1)
+kadin <- c(20.4, 22.2, 23.7, 26.1, 25.3, 30.6, 30.3, 28.7, 25.2, 23.2, 22.3)
+
+
+df <- data.frame(Yillar = yillar, Toplam = toplam, Erkek = erkek, Kadin = kadin)
+
+
+library(ggplot2)
+
+ggplot(df, aes(x = Yillar)) +
+  geom_line(aes(y = Toplam, color = "Toplam"), size = 1.2) +
+  geom_line(aes(y = Erkek, color = "Erkek"), size = 1.2) +
+  geom_line(aes(y = Kadin, color = "Kadin"), size = 1.2) +
+  scale_color_manual(values = c("Toplam" = "gray", "Erkek" = "blue", "Kadin" = "red")) +
+  labs(title = "Genc Issizlik Orani (2014-2024) - Cinsiyete Gore",
+       x = "Yıl",
+       y = "Issizlik Orani (%)",
+       color = "Cinsiyet") +
+  theme_minimal(base_size = 14) +
+  theme(legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        plot.title = element_text(size = 16, face = "bold", hjust = 0.5))
