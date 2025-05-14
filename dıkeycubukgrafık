@@ -1,0 +1,17 @@
+
+library(ggplot2)
+
+ 
+nedenler <- c("Ev isleri", "Egitim", "Emekli", "Calisamaz", "Diger")
+sayilar <- c(6657, 3935, 4124, 6810, 4111)
+
+
+veri <- data.frame(Neden=nedenler, Kisi=sayilar)
+
+
+ggplot(veri, aes(x=Neden, y=Kisi, fill=Neden)) +
+  geom_bar(stat="identity") +
+  labs(title="2024 IV. Ceyrek - Isgucune Dahil Olmama Nedenleri",
+       x="Neden",
+       y="Kisi Sayisi (Bin)") +
+  theme_minimal()
