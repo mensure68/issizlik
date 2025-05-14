@@ -1,0 +1,18 @@
+
+library(ggplot2)
+
+
+data <- data.frame(
+  Alan = c("Egitim", "Sanat", "Beşeri bilimler", "Diller", "Is ve yonetim", "Hukuk", 
+           "Muhendislik", "Saglik", "Guv. hizmetleri"),
+  Katilma = c(72.3, 76.1, 66.0, 75.2, 74.9, 77.3, 87.4, 84.2, 86.4),
+  Issizlik = c(7.9, 14.0, 10.9, 14.0, 9.9, 13.5, 8.1, 4.9, 11.0)
+)
+
+ggplot(data, aes(x = Katilma, y = Issizlik, label = Alan)) +
+  geom_point(color = "steelblue", size = 3) +
+  geom_text(vjust = -1, size = 2.5) +
+  labs(title = "2024: Alanlara gore isgucune katilma ve issizlik orani",
+       x = "Işgucune katilma orani (%)",
+       y = "Issizlik orani (%)") 
+  theme_minimal()
